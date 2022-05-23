@@ -1,5 +1,7 @@
 package main
 
+//initializing project
+
 import (
 	"fmt"
 )
