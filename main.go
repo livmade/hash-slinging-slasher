@@ -3,6 +3,7 @@ package main
 //Login HTML
 
 import (
+	"errors"
 	"fmt"
 	"html/template"
 	"net/http"
@@ -22,27 +23,42 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	http.HandleFunc("/", loginPage)
-	http.HandleFunc("/login", loginPage)
-	http.ListenAndServe(":3000", nil)
 
+	http.HandleFunc("/", handleLandingPage)
+	http.HandleFunc("/login", loginPage)
+
+	fmt.Println("Starting server on port 3000...")
+	http.ListenAndServe(":3000", nil)
+}
+
+func handleLandingPage(w http.ResponseWriter, r *http.Request) {
+	cookie, err := r.Cookie("hash-slinging-session-id")
+	if errors.Is(err, http.ErrNoCookie) {
+		w.Header().Set("Location", "/login")
+		w.WriteHeader(302)
+		return
+	}
+
+	if cookie.Value != "super secret value" {
+		// check session find user
+	}
+
+	w.WriteHeader(200)
+	w.Write([]byte("cat"))
 }
 
 func loginPage(w http.ResponseWriter, r *http.Request) {
-	uN := usrID{"username"}
-	r.ParseForm()
-	// logic part of log in
-	fmt.Println("username:", r.Form["username"])
-	fmt.Println("password:", r.Form["password"])
 
-	err := t.Execute(w, uN)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+	if r.Method == "GET" {
+		t.Execute(w, nil)
+		return
+		// server login webpage with form
+	} else if r.Method == "POST" {
+		// handle login form, session creation and redirect back on success with cookie
+		// if not success show them the door.
+		r.ParseForm()
+	} else {
+		// what ???? invalid method so show error message or the door.
+		err=
 	}
-	
-	t.Execute(w, struct{ Success bool }{true})
 }
-
-func userInput() {
-
-} //This takes in user input
