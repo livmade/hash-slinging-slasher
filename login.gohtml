@@ -1,20 +1,8 @@
-<!-- login.html -->
-    <h1> Welcome </h1>
-    {{if .Success}}
-        <h3> Hello, {{.Name}} </h3> 
-            <p> You have successfully signed in! <p>
-    {{else if}}
-        <h3> Username or Password not found. Please try again! </h3>
-        <form action="/login" method="post">
-            Username: <input type="text" name="username"><br><br>
-            Password: <input type="text" name="password"><br><br>
-            <input type="submit" value="Login">
-        </form>
-    {{else}}
-        <h3> Please login or create login </h3>
-        <form action="/login" method="post">
-            Username: <input type="text"><br><br>
-            Password: <input type="text"><br><br>
-            <input type="submit" value="Login">
-        </form>
-    {{end}}
+<html>
+<h3> Please login or create login </h3>
+<form action="/login" method="post">
+    Username: <input name="username" type="text"><br><br>
+    Password: <input name="password" type="password"><br><br>
+    <button type="submit">submit</button>
+</form>
+</html>
